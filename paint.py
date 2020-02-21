@@ -15,7 +15,7 @@ COLORS1=[(26, 188, 156),(205, 97, 85),(27, 38, 49),(29, 131, 72),(165, 105, 189)
 COLORS2=[(0, 77, 64),(1, 87, 155),(26, 35, 126),(74, 20, 140),(136, 14, 79),(183, 28, 28),(62, 39, 35),(230, 81, 0),(245, 127, 23),(130, 119, 23)]
 lst=[]
 temp=[]
-grid=[[1 for a in range(21)] for b in range(21) ]
+grid=[[1 for a in range(20)] for b in range(20) ]
 
 
 def areaFill(x,y,grid):
@@ -23,6 +23,7 @@ def areaFill(x,y,grid):
     cubeFill=[(x//WIDTH,y//HEIGHT)]
     print(cubeFill)
     while True:
+        print(len(cubeFill))
         if len(cubeFill)==0:
             return False
         else:
@@ -30,11 +31,16 @@ def areaFill(x,y,grid):
             x=cubeFill[0][0]
             y=cubeFill[0][1]
             if grid[x][y]:
+                
+                cubeFill.append((x-1,y)) if x!=0 else None
+                cubeFill.append((x+1,y)) if x!=19 else None
+                cubeFill.append((x,y-1)) if y!=0 else None
+                cubeFill.append((x,y+1)) if y!=19 else None
+                  
+                       
 
-                cubeFill.append((x,y-1))
-                cubeFill.append((x,y+1))
-                cubeFill.append((x-1,y))
-                cubeFill.append((x+1,y))
+
+                
                 pygame.draw.rect(SCREEN,color,[WIDTH*(x),HEIGHT*(y),WIDTH,HEIGHT])
                 print(cubeFill[0])
                 cubeFill.remove(cubeFill[0])
@@ -50,21 +56,22 @@ def areaFill(x,y,grid):
 
 def redraw():
     
-    for row in range(21):
-            for column in range(21):
+    for row in range(20):
+            for column in range(20):
                 pygame.draw.rect(SCREEN,
-                                 BLACK,
+                                 WHITE,
                                  [(MARGIN + WIDTH) * column + MARGIN,
                                   (MARGIN + HEIGHT) * row + MARGIN,
                                   WIDTH,
                                   HEIGHT])  
     #             pygame.draw.circle(SCREEN,WHITE,((WIDTH*column),(HEIGHT*row)),5)
 
-    pygame.draw.line(SCREEN,bottomColor,(0,499),(500,499))
+    
    
     pygame.draw.rect(SCREEN,
                      WHITE,
                      [0,500,500,100])
+    pygame.draw.line(SCREEN,bottomColor,(0,499),(500,499))
     # pygame.draw.circle(SCREEN,GREEN,(200,550),20)
     # pygame.draw.circle(SCREEN,RED,(250,550),20)
     # pygame.draw.circle(SCREEN,BLUE,(300,550),20)
@@ -110,7 +117,7 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 sys.exit()
-            elif y<(500-HEIGHT) and pygame.mouse.get_pressed()[0]:
+            elif y<(500) and pygame.mouse.get_pressed()[0]:
                 if areaFillFlag:
                     areaFill(x,y,grid)
                     print(areaFillFlag)
@@ -137,20 +144,17 @@ if __name__ == '__main__':
                 else:
                     color=COLORS1[a]
             elif x>=300 and x<=500 and y>=520 and y<=540 and pygame.mouse.get_pressed()[0]:
-                # a=(int((x-300)/20))
-                # if a==0:
-                #     color=COLORS2[0]
-                # else:
-                #     color=COLORS2[a]
+                
                 color=COLORS2[int((x-300)/20)]
             elif x>=460 and x<=490 and y>=540 and y<=570 and pygame.mouse.get_pressed()[0]:
                 SCREEN.fill(WHITE)
-                grid=[[1 for a in range(21)] for b in range(21) ]
+                grid=[[1 for a in range(20)] for b in range(20) ]
                 areaFillFlag=False
 
                 redraw()
             elif x>=430 and x<460 and y>=540 and y<=570 and pygame.mouse.get_pressed()[0]:
                 color=WHITE
+                
             elif x>=400 and x<430 and y>=540 and y<=570 and pygame.mouse.get_pressed()[0]:
                 areaFillFlag=True
                 # areaFill(x,y,grid)
